@@ -45,6 +45,12 @@ namespace DIO.Series
         public void Excluir() {
             this.Excluido = true;
         }
+
+        public bool ValidaExluido() {
+            if (this.Excluido)
+            return true;
+            return false;
+        }
     }
 
     
