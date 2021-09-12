@@ -39,11 +39,26 @@ namespace DIO.Series
                 }
                 opcao = ObterOpacaoUsuario().ToUpper();
             }
+            Console.WriteLine("Thank you for using ours services! Goodbye!");
+            Console.ReadLine();
         }
 
         private static void VisualizarSerie()
         {
-            throw new NotImplementedException();
+             Console.WriteLine("Visualizar Série");
+            Console.WriteLine();
+            Console.Write("Digite o Id da Série que você quer Listar: ");
+            int listaId = int.Parse(Console.ReadLine());
+            //int id, Serie objeto
+            var serie = repository.RetornaPorId(listaId);
+            if (serie.Id != listaId)
+            {
+                Console.WriteLine("Série não localizada!");
+                return;
+            } else
+            {
+                Console.WriteLine(serie);
+            } 
         }
 
         private static void ExcluirSerie()
@@ -137,8 +152,13 @@ namespace DIO.Series
             string descricao = Console.ReadLine();
             Console.WriteLine("Digite o Ano de Lançamento: ");
             int ano = int.Parse(Console.ReadLine());
-            int listaId = repository.ProximoId();
-            Serie serie = new Serie(listaId, genero:(Genero) entradaGenero, titulo, descricao, ano);
+            //int listaId = repository.ProximoId();
+            Serie serie = new Serie(id: repository.ProximoId(), 
+                genero: (Genero)entradaGenero, 
+                titulo: titulo, 
+                descricao: descricao, 
+                ano: ano);
+
             repository.Insere(serie);
             Console.WriteLine("Série {0} inserida com sucesso!", titulo);
         }
@@ -157,7 +177,7 @@ namespace DIO.Series
             {
                 foreach (var serie in lista)
                 {
-                    if (serie.ValidaExluido())
+                    if (!serie.ValidaExluido())
                     {
                         Console.WriteLine("#ID {0} - {1}", serie.RetornaId(), serie.RetornaTitulo());
                     }
@@ -183,5 +203,6 @@ namespace DIO.Series
 
             return opcaoUsuario;
         }
+        
     }
 }
